@@ -6,9 +6,11 @@ using Accord.Math;
 using GoogleARCore;
 using GoogleARCore.Examples.AugmentedImage;
 using System.IO;
+using UnityEngine.UI;
 
 public class ReadScanController : MonoBehaviour {
 
+    public Text instruction;
     public GameObject Scanner;
     //Path for reading point cloud from device
     private string path;
@@ -97,9 +99,10 @@ public class ReadScanController : MonoBehaviour {
     public void LoadMap()
     {
         Debug.Log("Load Map is called");
-        if(File.Exists(path+"/Map.txt"))
+        if(m_Visualizers.Count==0)
         {
-            Debug.Log("File found");
+            instruction.gameObject.SetActive(true);
+            return;
         }
         try
         {
@@ -143,6 +146,7 @@ public class ReadScanController : MonoBehaviour {
                     ScannerPos.Add(new UnityEngine.Vector3(x, y, z));
                 }
             }
+            instruction.gameObject.SetActive(false);
         }
         catch(FileNotFoundException ex)
         {
